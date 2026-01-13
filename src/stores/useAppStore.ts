@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { Product, CartItem, User, Order } from '../types';
 import { users } from '../data/users';
-import { getCart, saveCart, getOrdersByUser, createOrder, getAllProducts, initializeProducts, getProductById } from '../lib/db';
+import { getCart, saveCart, getOrdersByUser, createOrder, getAllProducts, initializeProducts, getProductById, checkDataExists } from '../lib/db';
 import { getCurrentUserId, setCurrentUserId } from '../lib/storage';
 
 export interface SyncStep {
@@ -19,6 +19,7 @@ interface AppState {
     isLoading: boolean;
     syncSteps: SyncStep[];
     isSynced: boolean;
+    showSyncScreen: boolean;
 
     // Actions
     initialize: () => Promise<void>;
@@ -42,6 +43,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     orders: [],
     isLoading: true,
     isSynced: false,
+    showSyncScreen: true,
     syncSteps: [
         { id: 'db', label: 'Khởi tạo cơ sở dữ liệu', status: 'pending' },
         { id: 'products', label: 'Tải danh sách sản phẩm (100 SP)', status: 'pending' },
@@ -52,6 +54,33 @@ export const useAppStore = create<AppState>((set, get) => ({
     ],
 
     initialize: async () => {
+        // Check if data already exists - skip sync screen
+        const dataExists = await checkDataExists();
+
+        if (dataExists) {
+            // Quick load without animation
+            try {
+                const products = await getAllProducts();
+                const userId = getCurrentUserId();
+                const cartData = await getCart(userId);
+                const orders = await getOrdersByUser(userId);
+
+                set({
+                    products,
+                    cart: cartData.items,
+                    orders,
+                    isLoading: false,
+                    isSynced: true,
+                    showSyncScreen: false,
+                    syncSteps: get().syncSteps.map(s => ({ ...s, status: 'done' as const }))
+                });
+                return;
+            } catch (error) {
+                console.error('Failed to load:', error);
+            }
+        }
+
+        // First time - show sync screen with animation
         const updateStep = (id: string, status: SyncStep['status']) => {
             set(state => ({
                 syncSteps: state.syncSteps.map(s => s.id === id ? { ...s, status } : s)
@@ -95,17 +124,18 @@ export const useAppStore = create<AppState>((set, get) => ({
             updateStep('cache', 'done');
 
             // All done!
-            await delay(500);
+            await delay(800);
             set({
                 products,
                 cart: cartData.items,
                 orders,
                 isLoading: false,
-                isSynced: true
+                isSynced: true,
+                showSyncScreen: false
             });
         } catch (error) {
             console.error('Failed to initialize:', error);
-            set({ isLoading: false });
+            set({ isLoading: false, showSyncScreen: false });
         }
     },
 

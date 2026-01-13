@@ -101,3 +101,10 @@ export async function createOrder(order: Order): Promise<void> {
     const db = await getDB();
     await db.put('orders', order);
 }
+
+// Check if data already exists (skip sync on reload)
+export async function checkDataExists(): Promise<boolean> {
+    const db = await getDB();
+    const products = await db.count('products');
+    return products > 0;
+}

@@ -13,13 +13,23 @@ import './App.css';
 function App() {
   const initialize = useAppStore(state => state.initialize);
   const isLoading = useAppStore(state => state.isLoading);
+  const showSyncScreen = useAppStore(state => state.showSyncScreen);
 
   useEffect(() => {
     initialize();
   }, [initialize]);
 
-  if (isLoading) {
+  if (isLoading && showSyncScreen) {
     return <SyncScreen />;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="loading-screen">
+        <div className="loader"></div>
+        <p>Đang tải...</p>
+      </div>
+    );
   }
 
   return (

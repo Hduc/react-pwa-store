@@ -4,6 +4,12 @@ import { users } from '../data/users';
 import { getCart, saveCart, getOrdersByUser, createOrder, getAllProducts, initializeProducts, getProductById } from '../lib/db';
 import { getCurrentUserId, setCurrentUserId } from '../lib/storage';
 
+export interface SyncStep {
+    id: string;
+    label: string;
+    status: 'pending' | 'loading' | 'done';
+}
+
 interface AppState {
     // State
     currentUser: User;
@@ -11,6 +17,8 @@ interface AppState {
     products: Product[];
     orders: Order[];
     isLoading: boolean;
+    syncSteps: SyncStep[];
+    isSynced: boolean;
 
     // Actions
     initialize: () => Promise<void>;
@@ -25,26 +33,75 @@ interface AppState {
     getCartItemCount: () => number;
 }
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export const useAppStore = create<AppState>((set, get) => ({
     currentUser: users.find(u => u.id === getCurrentUserId()) || users[0],
     cart: [],
     products: [],
     orders: [],
     isLoading: true,
+    isSynced: false,
+    syncSteps: [
+        { id: 'db', label: 'Khởi tạo cơ sở dữ liệu', status: 'pending' },
+        { id: 'products', label: 'Tải danh sách sản phẩm (100 SP)', status: 'pending' },
+        { id: 'users', label: 'Tải thông tin tài khoản', status: 'pending' },
+        { id: 'cart', label: 'Đồng bộ giỏ hàng', status: 'pending' },
+        { id: 'orders', label: 'Tải lịch sử đơn hàng', status: 'pending' },
+        { id: 'cache', label: 'Lưu cache cho offline', status: 'pending' },
+    ],
 
     initialize: async () => {
-        try {
-            await initializeProducts();
-            const products = await getAllProducts();
-            const userId = getCurrentUserId();
-            const cartData = await getCart(userId);
-            const orders = await getOrdersByUser(userId);
+        const updateStep = (id: string, status: SyncStep['status']) => {
+            set(state => ({
+                syncSteps: state.syncSteps.map(s => s.id === id ? { ...s, status } : s)
+            }));
+        };
 
+        try {
+            // Step 1: Initialize DB
+            updateStep('db', 'loading');
+            await delay(300);
+            await initializeProducts();
+            updateStep('db', 'done');
+
+            // Step 2: Load products
+            updateStep('products', 'loading');
+            await delay(400);
+            const products = await getAllProducts();
+            updateStep('products', 'done');
+
+            // Step 3: Load users
+            updateStep('users', 'loading');
+            await delay(200);
+            const userId = getCurrentUserId();
+            updateStep('users', 'done');
+
+            // Step 4: Load cart
+            updateStep('cart', 'loading');
+            await delay(300);
+            const cartData = await getCart(userId);
+            updateStep('cart', 'done');
+
+            // Step 5: Load orders
+            updateStep('orders', 'loading');
+            await delay(300);
+            const orders = await getOrdersByUser(userId);
+            updateStep('orders', 'done');
+
+            // Step 6: Cache for offline
+            updateStep('cache', 'loading');
+            await delay(400);
+            updateStep('cache', 'done');
+
+            // All done!
+            await delay(500);
             set({
                 products,
                 cart: cartData.items,
                 orders,
-                isLoading: false
+                isLoading: false,
+                isSynced: true
             });
         } catch (error) {
             console.error('Failed to initialize:', error);

@@ -1,0 +1,156 @@
+.sync-screen {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.sync-content {
+    width: 100%;
+    max-width: 360px;
+    text-align: center;
+}
+
+.sync-logo {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.sync-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #6366f1, #22d3ee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0 0 8px 0;
+}
+
+.sync-subtitle {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin: 0 0 24px 0;
+}
+
+.sync-progress-bar {
+    height: 6px;
+    background: #1e293b;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.sync-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6366f1, #22d3ee);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.sync-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.sync-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: #1e293b;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.sync-step.loading {
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid #6366f1;
+}
+
+.sync-step.done {
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.step-icon {
+    font-size: 1rem;
+    width: 24px;
+    text-align: center;
+}
+
+.sync-step.loading .step-icon {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.step-label {
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+.sync-step.loading .step-label {
+    color: #f1f5f9;
+}
+
+.sync-step.done .step-label {
+    color: #10b981;
+}
+
+.sync-complete {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(34, 211, 238, 0.1));
+    border: 1px solid #10b981;
+    border-radius: 12px;
+    padding: 16px;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sync-complete span {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.sync-complete p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.sync-complete strong {
+    color: #22d3ee;
+}

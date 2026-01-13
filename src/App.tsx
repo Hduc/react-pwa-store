@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useAppStore } from './stores/useAppStore';
 import { Header } from './components/Header';
 import { Toast } from './components/Toast';
+import { SyncScreen } from './components/SyncScreen';
 import { HomePage } from './pages/HomePage';
 import { CartPage } from './pages/CartPage';
 import { OrdersPage } from './pages/OrdersPage';
@@ -18,12 +19,7 @@ function App() {
   }, [initialize]);
 
   if (isLoading) {
-    return (
-      <div className="loading-screen">
-        <div className="loader"></div>
-        <p>Đang tải ứng dụng...</p>
-      </div>
-    );
+    return <SyncScreen />;
   }
 
   return (

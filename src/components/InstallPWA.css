@@ -1,0 +1,60 @@
+.install-pwa {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.install-btn,
+.share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.install-btn {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+}
+
+.install-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+}
+
+.share-btn {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #f1f5f9;
+}
+
+.share-btn:hover {
+    background: #334155;
+}
+
+.ios-prompt {
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid #6366f1;
+    border-radius: 12px;
+    padding: 12px 16px;
+}
+
+.ios-prompt p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+.ios-prompt span {
+    margin-right: 8px;
+}
+
+.ios-prompt strong {
+    color: #f1f5f9;
+}

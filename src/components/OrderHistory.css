@@ -1,0 +1,163 @@
+.orders-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.orders-title {
+    color: #f1f5f9;
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.user-badge {
+    font-size: 0.85rem;
+    background: #1e293b;
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: #94a3b8;
+}
+
+.orders-empty {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.orders-empty .empty-icon {
+    font-size: 5rem;
+    display: block;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.orders-empty h2 {
+    color: #f1f5f9;
+    margin-bottom: 10px;
+}
+
+.orders-empty p {
+    color: #64748b;
+}
+
+.orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.order-card {
+    background: linear-gradient(145deg, #1e293b, #0f172a);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #334155;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: rgba(99, 102, 241, 0.1);
+    border-bottom: 1px solid #334155;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.order-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.order-id {
+    color: #f1f5f9;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.order-date {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.order-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.order-status.completed {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+}
+
+.order-status.pending {
+    background: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+}
+
+.order-items {
+    padding: 16px 20px;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #1e293b;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.order-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.order-item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.item-name {
+    color: #f1f5f9;
+    font-size: 0.95rem;
+}
+
+.item-qty {
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.item-price {
+    color: #22d3ee;
+    font-weight: 600;
+}
+
+.order-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: #0f172a;
+    color: #f1f5f9;
+    font-size: 1rem;
+}
+
+.order-total {
+    color: #22d3ee;
+    font-size: 1.2rem;
+    font-weight: 700;
+}

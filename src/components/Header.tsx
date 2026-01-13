@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAppStore } from '../stores/useAppStore';
 import { UserSwitcher } from './UserSwitcher';
@@ -7,11 +7,11 @@ import './Header.css';
 
 export function Header() {
     const products = useAppStore(state => state.products);
-    const getCartItemCount = useAppStore(state => state.getCartItemCount);
+    const cart = useAppStore(state => state.cart);
     const orders = useAppStore(state => state.orders);
 
     const productCount = products.length;
-    const cartCount = getCartItemCount();
+    const cartCount = useMemo(() => cart.reduce((sum, item) => sum + item.quantity, 0), [cart]);
     const orderCount = orders.length;
 
     // Track previous cart count to animate on change
@@ -22,6 +22,7 @@ export function Header() {
         if (cartCount > prevCartCount.current) {
             setCartBounce(true);
             const timer = setTimeout(() => setCartBounce(false), 500);
+            prevCartCount.current = cartCount;
             return () => clearTimeout(timer);
         }
         prevCartCount.current = cartCount;
@@ -35,6 +36,7 @@ export function Header() {
         if (orderCount > prevOrderCount.current) {
             setOrderBounce(true);
             const timer = setTimeout(() => setOrderBounce(false), 500);
+            prevOrderCount.current = orderCount;
             return () => clearTimeout(timer);
         }
         prevOrderCount.current = orderCount;
